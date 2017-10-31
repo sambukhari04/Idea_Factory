@@ -1,0 +1,45 @@
+<div class="container-flex justify-content-center row">
+  <div class="card">
+    <h1><%= @idea.title %></h1>
+    <p><%= @idea.description %></p>
+
+    <p><strong>Created At:</strong> <%= @idea.created_at %></p>
+    <% if user_signed_in? && can?(:manage, @idea) %>
+<%= link_to "Edit", edit_idea_path(@idea) %>
+<%= link_to "Delete", idea_path(@idea), method: :delete %>
+<% end %>
+  </div>
+</div>
+
+
+<h2>Reviews</h2>
+
+<%= form_for [@idea, @review] do |f| %>
+  <% if @review.errors.present? %>
+    <p>
+      <%= @review.errors.full_messages.join(', ') %>
+    </p>
+  <% end %>
+  <div>
+    <%= f.text_area :body %>
+  </div>
+  <%= f.submit(value = 'Review') %>
+<% end %>
+
+<div class="review-list">
+  <% @idea.reviews.each do |review| %>
+    <div class="review-list-item">
+      <p><%= review.body %></p>
+      <p>By <%= review.user&.full_name %></p>
+      <p><strong>Created At:</strong> <%= time_ago_in_words(review.created_at) %> ago</p>
+      <% if can?(:destroy, review) %>
+        <%= link_to(
+          'Delete',
+          review_path(review),
+          data: {confirm: 'Are you sure?'},
+          method: :delete
+        ) %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

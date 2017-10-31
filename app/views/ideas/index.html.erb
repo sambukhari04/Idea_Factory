@@ -1,0 +1,18 @@
+<div class="container">
+ <div class="row">
+    <h1>All Ideas</h1>
+      <div class="row col-12 justify-content-around">
+
+        <% @ideas.each do |idea| %>
+          <div class='card-block'>
+            <div class='card' style="width:19rem;">
+
+              <%= link_to idea.title, idea_path(idea) %>
+
+              <p><% idea.description%></p>
+            </div>
+            <hr>
+          </div>
+        <% end %>
+  </div>
+</div>
