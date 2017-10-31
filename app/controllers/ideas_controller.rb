@@ -1,6 +1,7 @@
 class IdeasController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :find_idea, only: [:show, :edit, :update, :destroy]
+  # before_action :find_review, only: [:destroy]
   before_action :authorize_user!, except: [:index, :show, :new, :create]
 
   def new
@@ -23,9 +24,10 @@ class IdeasController < ApplicationController
   end
 
   def show
-    # @idea = Idea.find params[:id]
-    @review = @idea.reviews.new
-    # @review = Review.new
+    @idea = Idea.find params[:id]
+    @reviews = @idea.reviews
+    @review = Review.new
+
   end
 
   def edit
@@ -34,7 +36,7 @@ class IdeasController < ApplicationController
   end
 
   def update
-    # return head :unauthorized unless can?(:update, @idea)
+    return head :unauthorized unless can?(:update, @idea)
     idea_params = params.require(:idea).permit(:title, :description)
     #  @idea = Idea.find params[:id]
   if @idea.update idea_params
@@ -50,7 +52,7 @@ class IdeasController < ApplicationController
 
   def destroy
     # @post = Post.find params[:id]
-    @idea.delete
+    @idea.destroy
     redirect_to ideas_path
   end
 

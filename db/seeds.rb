@@ -9,6 +9,7 @@ PASSWORD = 'hello'
 
 Idea.destroy_all
 User.destroy_all
+Review.destroy_all
 
 10.times.each do
   first_name = Faker::Name.first_name
@@ -25,11 +26,26 @@ users = User.all
 100.times.each do
   Idea.create(
     title: Faker::Friends.character,
-    description: Faker::Seinfeld.quote
-    # user: users.sample
+    description: Faker::Seinfeld.quote,
+    user: users.sample
   )
 end
 ideas = Idea.all
 
+ideas.each do |idea|
+  rand(0..5).times.each do
+    Review.create(
+      body: Faker::TheFreshPrinceOfBelAir.quote,
+      idea: idea,
+      user: users.sample
+    )
+  end
+end
+
+reviews = Review.all
+
+
+
 puts Cowsay.say("Created #{users.count} users", :tux)
 puts Cowsay.say("Created #{ideas.count} ideas", :dragon)
+puts "Created #{reviews.count} reviews"

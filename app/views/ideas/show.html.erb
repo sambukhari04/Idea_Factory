@@ -35,7 +35,7 @@
       <% if can?(:destroy, review) %>
         <%= link_to(
           'Delete',
-          post_review_path(@idea, review),
+          review_path(review),
           data: {confirm: 'Are you sure?'},
           method: :delete
         ) %>

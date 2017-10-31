@@ -1,11 +1,12 @@
 class ReviewsController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_idea, only: [:create, :destroy]
+  before_action :find_idea, only: [:create]
   before_action :find_review, only: [:destroy]
-  before_action :authorize_user!, except: [:create, :destroy]
+  before_action :authorize_user!, except: [:create]
 
   def create
-    @idea = @idea.reviews.build(review_params)
+
+    @review = @idea.reviews.build(review_params)
 
     @review.user = current_user
 
@@ -18,9 +19,10 @@ class ReviewsController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, @review
+    # authorize! :destroy, @review
+    idea = @review.idea
     @review.destroy
-    redirect_to idea_path(@idea)
+    redirect_to idea_path(idea)
   end
 
   private
